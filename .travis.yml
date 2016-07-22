@@ -2,8 +2,6 @@ python:
   - 3.5
   - 3.4
   - 2.7
-  - pypy
-env: [TOXENV=py35, TOXENV=py34, TOXENV=py33, TOXENV=py27, TOXENV=py26, TOXENV=pypy]
 language: python
 deploy:
   provider: pypi
