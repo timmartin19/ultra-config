@@ -1,7 +1,10 @@
-python: 3.5
+python:
+  - 3.5
+  - 3.4
+  - 2.7
+  - pypy
 env: [TOXENV=py35, TOXENV=py34, TOXENV=py33, TOXENV=py27, TOXENV=py26, TOXENV=pypy]
 language: python
-install: pip install -U tox
 deploy:
   provider: pypi
   password: {secure: PLEASE_REPLACE_ME}
@@ -12,7 +15,7 @@ deploy:
   YWZ0ZXJfc3VjY2Vzcw==
 : - !!binary |
     YmFzaCA8KGN1cmwgLXMgaHR0cHM6Ly9jb2RlY292LmlvL2Jhc2gp
-script: tox -e ${TOXENV}
+script: python -m unittest discover
 ? !!binary |
   ZGVwbG95
 : ? !!binary |
