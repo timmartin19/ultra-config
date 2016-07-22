@@ -79,7 +79,7 @@ def simple_config(default_settings=None, json_file=None, ini_file=None, env_var_
     if overrides:
         loaders.append([load_dict_settings, overrides])
 
-    config = UltraConfig(loaders)
+    config = UltraConfig(*loaders)
     config.load()
     return config
 
