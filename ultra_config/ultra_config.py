@@ -69,15 +69,15 @@ def simple_config(default_settings=None, json_file=None, ini_file=None, env_var_
     """
     loaders = []
     if default_settings:
-        loaders.append([load_python_module_settings, default_settings])
+        loaders.append([load_python_module_settings, [default_settings]])
     if json_file:
-        loaders.append([load_json_file_settings, json_file])
+        loaders.append([load_json_file_settings, [json_file]])
     if ini_file:
-        loaders.append([load_configparser_settings, ini_file])
+        loaders.append([load_configparser_settings, [ini_file]])
     if env_var_prefix:
-        loaders.append([get_envvar_configuration, env_var_prefix])
+        loaders.append([get_envvar_configuration, [env_var_prefix]])
     if overrides:
-        loaders.append([load_dict_settings, overrides])
+        loaders.append([load_dict_settings, [overrides]])
 
     config = UltraConfig(*loaders)
     config.load()
