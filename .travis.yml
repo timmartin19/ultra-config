@@ -1,32 +1,55 @@
-# Config file for automatic testing at travis-ci.org
-# This file will be regenerated if you run travis_pypi_setup.py
-
-language: python
 python: 3.5
-
-env:
-  - TOXENV=py35
-  - TOXENV=py34
-  - TOXENV=py33
-  - TOXENV=py27
-  - TOXENV=py26
-  - TOXENV=pypy
-
-# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+env: [TOXENV=py35, TOXENV=py34, TOXENV=py33, TOXENV=py27, TOXENV=py26, TOXENV=pypy]
+language: python
 install: pip install -U tox
-
-# command to run tests, e.g. python setup.py test
-script: tox -e ${TOXENV}
-
-# After you create the Github repo and add it to Travis, run the
-# travis_pypi_setup.py script to finish PyPI deployment setup
 deploy:
   provider: pypi
-  distributions: sdist bdist_wheel
+  password: {secure: PLEASE_REPLACE_ME}
   user: timmmartin19
-  password:
-    secure: PLEASE_REPLACE_ME
-  on:
-    tags: true
-    repo: timmmartin19/ultra_config
-    condition: $TOXENV == py27
+  distributions: sdist bdist_wheel
+  true: {condition: $TOXENV == py27, repo: timmmartin19/ultra_config, tags: true}
+? !!binary |
+  YWZ0ZXJfc3VjY2Vzcw==
+: - !!binary |
+    YmFzaCA8KGN1cmwgLXMgaHR0cHM6Ly9jb2RlY292LmlvL2Jhc2gp
+script: tox -e ${TOXENV}
+? !!binary |
+  ZGVwbG95
+: ? !!binary |
+    ZGlzdHJpYnV0aW9ucw==
+  : !!binary |
+    c2Rpc3QgYmRpc3Rfd2hlZWw=
+  ? !!binary |
+    b24=
+  : ? !!binary |
+      cmVwbw==
+    : !!binary |
+      dGltbWFydGluMTkvdWx0cmEtY29uZmln
+    ? !!binary |
+      dGFncw==
+    : true
+  ? !!binary |
+    cGFzc3dvcmQ=
+  : ? !!binary |
+      c2VjdXJl
+    : !!binary |
+      cjk0c0QyTDRvNVY0U0dpVVV6RXpwNEVQMDArbnc1RTc4L0dSN29OWmw5b0VNb2tpRlg1blVsWXc1
+      bzFQc2ZXbWM1bjZDQVptaEloTVdPOGNlMFhtQTBodXBWTkJkN2hXYkZjTEkvZEpOQkIxRXZlRFha
+      bDRwSCtmM2RNOEFYMk5xT1kxQlVzVDZPb3R3UHAxMjZJM2EzdERHM1VWbE1zd3YxL1JyRFRZRzhE
+      bUx0OFMxaFNNRGdQUVZpV0t1VWRIOXFLZ3REeGRnR1Bwa3lRRjMxTmhCdGd3NFhpUHA2ekNMOVlu
+      QVR2aEJ6OTcvWU9ldWFQb2YweFpxTWpqOXRUMGIrcW1tV2p3UitKQmhHQVNxQ0pXSTdUU3k4aTJJ
+      cEpNOHRrY0FCakhjc25EYVFWYnVFcWg2RkczbFBudEZKTFM4aUtLd0N3RVR1VWNLS21raHdtQ21H
+      ZlZkbVNmMHB1VUtMUFBHem1nVGNmYlpTblRSK24rcE9ONHMrWElWWE1OSVJsVDUrN1NnMVdkSXVv
+      N3FVYldYckpSdjNCU0lidzJzSCtvQ1gvNnJRc3d2MjZPU1dYTEpXU056S3RUaHVPamU4VTlIMlJC
+      VXQ0cEJVQmlQeGRyQ0I1TXdLdkJtN2VvbkhWTUVBL3BhVmRuT08vcG5Zd2tvSjFaK2ZVZ2xmaEJ3
+      MWdVc2FkSzBtQWsvdzJncmN3T01zTnV3S3lqb0w4VjlnVElXVzBsVzcxL2hRTzUybmZmMEdFa0xY
+      SndldkdmNXlkOEllNFpnMlFLNWYwbkZUOE9jVUEvb1VyTzlqVDU2UGRKaWVmcFJLRHJPVUNMVTZZ
+      QzlHalpaMlVnVkh2Q0wyOVNKZGVuY2xHMVJKTEhXVjFyLzRYaU55dlFEc3VoaXpYNVhic0Vtb0E9
+  ? !!binary |
+    cHJvdmlkZXI=
+  : !!binary |
+    cHlwaQ==
+  ? !!binary |
+    dXNlcg==
+  : !!binary |
+    dGltbWFydGluMTk=
