@@ -21,7 +21,7 @@ test_requirements = [
 
 setup(
     name='ultra_config',
-    version='0.1.0',
+    version='0.1.1',
     description="An extendable configuration that enables you to configure your application via python modules, config files, environment variables and more!",
     long_description=readme + '\n\n' + history,
     author="Tim Martin",
