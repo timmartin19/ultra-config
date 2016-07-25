@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-from configparser import ConfigParser
+try:
+    from configparser import ConfigParser
+except ImportError:
+    from ConfigParser import ConfigParser
 import json
 
 from env_config import get_envvar_configuration
