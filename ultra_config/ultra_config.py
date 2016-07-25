@@ -40,6 +40,11 @@ def load_json_file_settings(filename):
 
 
 class UltraConfig(CaseInsensitiveDict):
+    """
+    A case insensitive dictionary like object
+    that allows for loading configuration
+    using a multitude of mechanisms
+    """
     def __init__(self, *loaders):
         super(UltraConfig, self).__init__()
         self._loaders = list(loaders)
