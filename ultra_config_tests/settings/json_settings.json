@@ -1,0 +1,6 @@
+{
+  "JSON_1": 1,
+  "json_2": 2,
+  "JSON_OVERRIDE": 2,
+  "ENV_VAR_OVERRIDE": 1
+}

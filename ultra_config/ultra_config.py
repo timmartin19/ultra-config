@@ -2,8 +2,10 @@
 from configparser import ConfigParser
 import json
 
-from CaseInsensitiveDict import CaseInsensitiveDict
 from env_config import get_envvar_configuration
+
+from ultra_config.case_insensitive_dict import CaseInsensitiveDict
+
 
 def load_python_module_settings(module):
     items = {}
@@ -25,20 +27,22 @@ def load_configparser_settings(filename):
     items = {}
     config_parser = ConfigParser()
     config_parser.read(filename)
-    for key, value in config_parser.items():
-        items[key] = value
+    for section_key, section in config_parser.items():
+        items[section_key] = {}
+        for key, value in section.items():
+            items[section_key][key] = value
     return items
 
 
 def load_json_file_settings(filename):
-    with open(filename, mode='rb') as f:
+    with open(filename, mode='r') as f:
         return json.load(f)
 
 
 class UltraConfig(CaseInsensitiveDict):
     def __init__(self, *loaders):
+        super(UltraConfig, self).__init__()
         self._loaders = list(loaders)
-        self._data = {}
 
     def load(self):
         for loader in self._loaders:
