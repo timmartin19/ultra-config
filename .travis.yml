@@ -1,56 +1,23 @@
-python:
-  - 3.5
-  - 3.4
-  - 2.7
-language: python
 deploy:
-  provider: pypi
-  password: {secure: PLEASE_REPLACE_ME}
-  user: timmmartin19
   distributions: sdist bdist_wheel
-  true: {condition: $TOXENV == py27, repo: timmmartin19/ultra_config, tags: true}
-? !!binary |
-  YWZ0ZXJfc3VjY2Vzcw==
-: - !!binary |
-    YmFzaCA8KGN1cmwgLXMgaHR0cHM6Ly9jb2RlY292LmlvL2Jhc2gp
+  'on': {repo: timmartin19/ultra-config, tags: true}
+  password:
+    secure: !!binary |
+      ZGY5R3BYWkhUWnNmU3JHRWU3QUY1NHNkb3RQNjlkZkFaY2srcEZjZ0V5aW9NRkNzU3ZGWE1vdFhq
+      dnRQNWhVeEdHd3VTcDlmbUwrUEFiV2NWQ2YrOHBWZ3ZwYjM2NS9uRllGaVYzdktiVXBWTFlmekdV
+      VHJFUmwya1crNFNEWjJpdUdWWGJLN0E5YXJ3RUswb2x6ekowRUJpMGJCUjRuVXU0VG5NSmlNb3F5
+      cDJyRTZPbG93UzdPbWNJdC92M29yNFRNdkE1bVV2STJOTGlCSXFUN0pnODBjWWQ5cjQ2U2NFMGR4
+      SnR0QW5SUlJTdzRyTlIrcEYxL0c4UU84eHZSR2Yvc1RVY2NJbzVHU0I2RWtnWitlWDVSUlNoNVp3
+      UXpSNXJnTDFrVW50eVNLcDlKdnpDYTlhdjBqZXZBNHBqb3ROb0dzcUNUZ1JWK3FnK3M3NU9abmQx
+      UjBGWFJqc1dXV1ZhVUJCUTZMeEM3SkRmM3k4Z1VRS3VxQzBaOGFyVFF5UnBCMWNoK21zTWo3RUJh
+      M2FqRUhmaWNGc2RiTE5xTlVVbWJrSDZ6RnJJN3o5dFRkYy9pMXVIOTFORHdyaGx5VEFhNURjeGhJ
+      Y3pQUVlNYm1TcTQxejFTcVkyUmVVQnkwQVpTckM1Uk94bDRyT2FuVjAxZkdhUnFXa2JkOEMwNlhT
+      MzE2MUpad2VCZTRJV1ZFQWFNaU9sOGdGQWgwU2ZPWlB1S2drb2FnZjd5NG5sUVhkenhOdm5aaHF4
+      UXNtblc4Tk9INWI1YVBGUmNQRFlVakFXMk5naTJsRzFVUU9WdDRUKytXUzRaeDlZekpodGhITk9V
+      UG5Zb2NEelIxN2lSdjd4aFNnR2s4MDhjYmZBb3VSUmM0Z3dIWVdPRlhMc1VoeXRQeHk5bG1aMjg9
+  provider: pypi
+  user: timmartin19
+language: python
 script: python -m unittest discover
-? !!binary |
-  ZGVwbG95
-: ? !!binary |
-    ZGlzdHJpYnV0aW9ucw==
-  : !!binary |
-    c2Rpc3QgYmRpc3Rfd2hlZWw=
-  ? !!binary |
-    b24=
-  : ? !!binary |
-      cmVwbw==
-    : !!binary |
-      dGltbWFydGluMTkvdWx0cmEtY29uZmln
-    ? !!binary |
-      dGFncw==
-    : true
-  ? !!binary |
-    cGFzc3dvcmQ=
-  : ? !!binary |
-      c2VjdXJl
-    : !!binary |
-      cjk0c0QyTDRvNVY0U0dpVVV6RXpwNEVQMDArbnc1RTc4L0dSN29OWmw5b0VNb2tpRlg1blVsWXc1
-      bzFQc2ZXbWM1bjZDQVptaEloTVdPOGNlMFhtQTBodXBWTkJkN2hXYkZjTEkvZEpOQkIxRXZlRFha
-      bDRwSCtmM2RNOEFYMk5xT1kxQlVzVDZPb3R3UHAxMjZJM2EzdERHM1VWbE1zd3YxL1JyRFRZRzhE
-      bUx0OFMxaFNNRGdQUVZpV0t1VWRIOXFLZ3REeGRnR1Bwa3lRRjMxTmhCdGd3NFhpUHA2ekNMOVlu
-      QVR2aEJ6OTcvWU9ldWFQb2YweFpxTWpqOXRUMGIrcW1tV2p3UitKQmhHQVNxQ0pXSTdUU3k4aTJJ
-      cEpNOHRrY0FCakhjc25EYVFWYnVFcWg2RkczbFBudEZKTFM4aUtLd0N3RVR1VWNLS21raHdtQ21H
-      ZlZkbVNmMHB1VUtMUFBHem1nVGNmYlpTblRSK24rcE9ONHMrWElWWE1OSVJsVDUrN1NnMVdkSXVv
-      N3FVYldYckpSdjNCU0lidzJzSCtvQ1gvNnJRc3d2MjZPU1dYTEpXU056S3RUaHVPamU4VTlIMlJC
-      VXQ0cEJVQmlQeGRyQ0I1TXdLdkJtN2VvbkhWTUVBL3BhVmRuT08vcG5Zd2tvSjFaK2ZVZ2xmaEJ3
-      MWdVc2FkSzBtQWsvdzJncmN3T01zTnV3S3lqb0w4VjlnVElXVzBsVzcxL2hRTzUybmZmMEdFa0xY
-      SndldkdmNXlkOEllNFpnMlFLNWYwbkZUOE9jVUEvb1VyTzlqVDU2UGRKaWVmcFJLRHJPVUNMVTZZ
-      QzlHalpaMlVnVkh2Q0wyOVNKZGVuY2xHMVJKTEhXVjFyLzRYaU55dlFEc3VoaXpYNVhic0Vtb0E9
-  ? !!binary |
-    cHJvdmlkZXI=
-  : !!binary |
-    cHlwaQ==
-  ? !!binary |
-    dXNlcg==
-  : !!binary |
-    dGltbWFydGluMTk=
+python: [3.5, 3.4, 2.7]
+after_success: ['bash <(curl -s https://codecov.io/bash)']
