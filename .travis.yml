@@ -1,23 +1,18 @@
 deploy:
   distributions: sdist bdist_wheel
-  'on': {repo: timmartin19/ultra-config, tags: true}
+  on:
+    repo: timmartin19/ultra-config
+    tags: true
   password:
-    secure: !!binary |
-      ZGY5R3BYWkhUWnNmU3JHRWU3QUY1NHNkb3RQNjlkZkFaY2srcEZjZ0V5aW9NRkNzU3ZGWE1vdFhq
-      dnRQNWhVeEdHd3VTcDlmbUwrUEFiV2NWQ2YrOHBWZ3ZwYjM2NS9uRllGaVYzdktiVXBWTFlmekdV
-      VHJFUmwya1crNFNEWjJpdUdWWGJLN0E5YXJ3RUswb2x6ekowRUJpMGJCUjRuVXU0VG5NSmlNb3F5
-      cDJyRTZPbG93UzdPbWNJdC92M29yNFRNdkE1bVV2STJOTGlCSXFUN0pnODBjWWQ5cjQ2U2NFMGR4
-      SnR0QW5SUlJTdzRyTlIrcEYxL0c4UU84eHZSR2Yvc1RVY2NJbzVHU0I2RWtnWitlWDVSUlNoNVp3
-      UXpSNXJnTDFrVW50eVNLcDlKdnpDYTlhdjBqZXZBNHBqb3ROb0dzcUNUZ1JWK3FnK3M3NU9abmQx
-      UjBGWFJqc1dXV1ZhVUJCUTZMeEM3SkRmM3k4Z1VRS3VxQzBaOGFyVFF5UnBCMWNoK21zTWo3RUJh
-      M2FqRUhmaWNGc2RiTE5xTlVVbWJrSDZ6RnJJN3o5dFRkYy9pMXVIOTFORHdyaGx5VEFhNURjeGhJ
-      Y3pQUVlNYm1TcTQxejFTcVkyUmVVQnkwQVpTckM1Uk94bDRyT2FuVjAxZkdhUnFXa2JkOEMwNlhT
-      MzE2MUpad2VCZTRJV1ZFQWFNaU9sOGdGQWgwU2ZPWlB1S2drb2FnZjd5NG5sUVhkenhOdm5aaHF4
-      UXNtblc4Tk9INWI1YVBGUmNQRFlVakFXMk5naTJsRzFVUU9WdDRUKytXUzRaeDlZekpodGhITk9V
-      UG5Zb2NEelIxN2lSdjd4aFNnR2s4MDhjYmZBb3VSUmM0Z3dIWVdPRlhMc1VoeXRQeHk5bG1aMjg9
+    secure: jNyvKiXkUfANFc8m8aOO7w1bRdg/6RroM+bxz6J8rWTd6QjADKzJu8qt019GhhRqAoKjAg2W3AL0o18tR8kkDtZDQ9tUNUcXjSIMDqU4eSZvGftj7SC8fVTgu77AaDo9d57bcNP8+5QaFMDRURwZzEQhn1YWBjJ3nuspyu6LsCz7KCNKmfjFAyQXhkjUtgwos/cl8TfybYjRb4h4YQhyZHYxq+p8Vb46/w0I/T0biPjp5wNAQT32bnSIHayJSxPhJrHSzO2lXwoZgT5s1SD63F+EoJGzraF3vJh4LCcKoNYqJtCEkF6GQ543i1gZlbEmrQEeESIOBppicWVoj0zWr1YirPhli93Ss2uFkEd4WlZ1nX5nkjU2+vqv1DM0SueujVjA1kh2VMn8IPJrBS/iDutnjnDnitlYzybGDUWvVlNN9yHrya5bp/VC6F7icmVycu7Sbb6yO+QsqjSDd5HNBhNyAs1F6zDR3TGoOAf+/gua5mIxrXyjur+gkE4hDwpY8mEFA/SC+IEGmruimE8hAs7Fwvijm9lkLsWwjuJgN6ecgMmCRhhVhr9W2JRSf/tYM6ZTMmD4XJJm+XUFNAoFIWV+YfX0FgKMfloThZiqTJu2vWtZNhBjL7Z9QY+dGXS4AZCRD9aOUKfqwK5y85dDQ/tU+vRKwm7NuG94/IZTgeI=
   provider: pypi
   user: timmartin19
 language: python
+before_script: pip install -e .
 script: python -m unittest discover
-python: [3.5, 3.4, 2.7]
-after_success: ['bash <(curl -s https://codecov.io/bash)']
+python:
+- 3.5
+- 3.4
+- 2.7
+after_success:
+- bash <(curl -s https://codecov.io/bash)
