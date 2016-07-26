@@ -34,10 +34,10 @@ def load_configparser_settings(filename):
     items = {}
     config_parser = ConfigParser()
     config_parser.read(filename)
-    for section_key, section in config_parser.items():
+    for section_key in config_parser.sections():
         items[section_key] = {}
-        for key, value in section.items():
-            items[section_key][key] = value
+        for option_key in config_parser.options(section_key):
+            items[section_key][option_key] = config_parser.get(section_key, option_key)
     return items
 
 
