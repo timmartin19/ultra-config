@@ -14,7 +14,7 @@ from env_config import get_envvar_configuration
 
 __author__ = 'Tim Martin'
 __email__ = 'tim@timmartin.me'
-__version__ = '0.1.9'
+__version__ = '0.2.0'
 
 
 def load_python_module_settings(module):
