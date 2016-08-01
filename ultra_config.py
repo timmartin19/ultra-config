@@ -49,6 +49,13 @@ def load_json_file_settings(filename):
         return json.load(f)
 
 
+class MissingConfiguration(ValueError):
+    """
+    Raised when a require configuration
+    parameter is missing
+    """
+
+
 class UltraConfig(CaseInsensitiveDict):
     """
     A case insensitive dictionary like object
@@ -75,7 +82,7 @@ class UltraConfig(CaseInsensitiveDict):
                 missing_items.append(item)
         if len(missing_items) > 0:
             required_string = ', '.join(['"{0}"'.format(item) for item in missing_items])
-            raise ValueError('Missing required items: {0}'.format(required_string))
+            raise MissingConfiguration('Missing required items: {0}'.format(required_string))
 
 
 def simple_config(default_settings=None,
