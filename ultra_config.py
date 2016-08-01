@@ -115,6 +115,7 @@ def simple_config(default_settings=None,
 
     config = UltraConfig(loaders, required=required)
     config.load()
+    config.validate()
     return config
 
 
