@@ -10,8 +10,8 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    'Click>=6.0',
-    'py-env-config'
+    'py-env-config',
+    'insensitive-dict'
 ]
 
 test_requirements = [
@@ -26,16 +26,7 @@ setup(
     author="Tim Martin",
     author_email='tim@timmartin.me',
     url='https://github.com/timmmartin19/ultra_config',
-    packages=[
-        'ultra_config',
-    ],
-    package_dir={'ultra_config':
-                 'ultra_config'},
-    entry_points={
-        'console_scripts': [
-            'ultra_config=ultra_config.cli:main'
-        ]
-    },
+    py_modules=['ultra_config'],
     include_package_data=True,
     install_requires=requirements,
     license="MIT license",

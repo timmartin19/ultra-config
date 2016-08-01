@@ -9,9 +9,12 @@ except ImportError:
     from ConfigParser import ConfigParser
 import json
 
+from insensitive_dict import CaseInsensitiveDict
 from env_config import get_envvar_configuration
 
-from ultra_config.case_insensitive_dict import CaseInsensitiveDict
+__author__ = 'Tim Martin'
+__email__ = 'tim@timmartin.me'
+__version__ = '0.1.9'
 
 
 def load_python_module_settings(module):
@@ -52,7 +55,8 @@ class UltraConfig(CaseInsensitiveDict):
     that allows for loading configuration
     using a multitude of mechanisms
     """
-    def __init__(self, *loaders):
+    def __init__(self, loaders, required=None):
+        self.required = required or []
         super(UltraConfig, self).__init__()
         self._loaders = list(loaders)
 
@@ -64,8 +68,22 @@ class UltraConfig(CaseInsensitiveDict):
             items = config_loader_func(*args, **kwargs)
             self.update(items)
 
+    def validate(self):
+        missing_items = []
+        for item in self.required:
+            if item not in self:
+                missing_items.append(item)
+        if len(missing_items) > 0:
+            required_string = ', '.join(['"{0}"'.format(item) for item in missing_items])
+            raise ValueError('Missing required items: {0}'.format(required_string))
 
-def simple_config(default_settings=None, json_file=None, ini_file=None, env_var_prefix=None, overrides=None):
+
+def simple_config(default_settings=None,
+                  json_file=None,
+                  ini_file=None,
+                  env_var_prefix=None,
+                  overrides=None,
+                  required=None):
     """
     Loads configuration in the following order
     * default_settings python module object
@@ -95,7 +113,7 @@ def simple_config(default_settings=None, json_file=None, ini_file=None, env_var_
     if overrides:
         loaders.append([load_dict_settings, [overrides]])
 
-    config = UltraConfig(*loaders)
+    config = UltraConfig(loaders, required=required)
     config.load()
     return config
 

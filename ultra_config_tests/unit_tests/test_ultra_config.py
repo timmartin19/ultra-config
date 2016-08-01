@@ -6,10 +6,9 @@ from __future__ import unicode_literals
 import os
 import unittest
 
-from ultra_config.ultra_config import simple_config, load_json_file_settings, \
+from ultra_config import simple_config, load_json_file_settings, \
     load_configparser_settings, load_python_object_settings, load_dict_settings, \
     UltraConfig
-
 from ultra_config_tests.unit_tests import default_config
 
 
@@ -78,7 +77,17 @@ class TestLoadPythonObjects(unittest.TestCase):
 
 class TestUltraConfig(unittest.TestCase):
     def test_load(self):
-        config = UltraConfig([lambda: dict(x=1, y=2)], [lambda: dict(x=3)])
+        config = UltraConfig([[lambda: dict(x=1, y=2)], [lambda: dict(x=3)]])
         config.load()
         self.assertEqual(config['x'], 3)
         self.assertEqual(config['y'], 2)
+
+    def test_required_items__when_missing__raises_ValueError(self):
+        config = UltraConfig([], required=['required'])
+        self.assertRaises(ValueError, config.validate)
+
+    def test_required_items__when_found(self):
+        config = UltraConfig([], required=['required'])
+        config['REQUIRED'] = True
+        resp = config.validate()
+        self.assertIsNone(resp)
