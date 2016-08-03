@@ -3,6 +3,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from functools import wraps
+
 try:
     from configparser import ConfigParser
 except ImportError:
@@ -148,3 +150,41 @@ class GlobalConfig(object):
         Takes the same parameters as ``simple_config``
         """
         cls.config = simple_config(*args, **kwargs)
+
+    @classmethod
+    def inject(cls, *inject_args, **inject_kwargs):
+        """
+        Inject arguments and keyword arguments from
+        configuration lazily.  Keyword arguments passed
+        into the function that conflict with the injected
+        arguments will not be overridden.
+
+        .. code-block:: simple
+
+            fron ultra_config import GlobalConfig
+
+            @GlobalConfig.inject('SETTING1', keyword='SETTING2')
+            def myfunc(arg, keyword=None):
+                print('arg: {0}, keyword: {1}', arg, keyword)
+
+            myfunc()
+            # prints "arg: 1, keyword: 2
+
+            myfunc(keyword="don't inject")
+            # prints "arg: 1, keyword: don't inject"
+
+        :param inject_args:
+        :param inject_kwargs:
+        :return:
+        """
+        def decorator(func):
+            @wraps(func)
+            def wrapper(*args, **kwargs):
+                extra_args = [cls.config[name] for name in inject_args]
+                all_args = list(args) + list(extra_args)
+                for key, value in inject_kwargs.items():
+                    if key not in kwargs:
+                        kwargs[key] = cls.config[value]
+                return func(*all_args, **kwargs)
+            return wrapper
+        return decorator
