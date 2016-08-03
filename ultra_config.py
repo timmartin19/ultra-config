@@ -126,4 +126,25 @@ def simple_config(default_settings=None,
     return config
 
 
+class GlobalConfig(object):
+    """
+    A global configuration object.  This class
+    is not designed to be instantiated but rather
+    just as a container.
 
+    .. doctest:: globalconfig
+
+        >>> from ultra_config import GlobalConfig
+        >>> GlobalConfig.load(env_var_prefix='my_app', overrides={'my_setting': 1})
+        >>> assert GlobalConfig.config['my_setting'] == 1
+    """
+    config = None
+
+    @classmethod
+    def load(cls, *args, **kwargs):
+        """
+        Loads the global configuration, replacing
+        existing configuration if it's already set.
+        Takes the same parameters as ``simple_config``
+        """
+        cls.config = simple_config(*args, **kwargs)
