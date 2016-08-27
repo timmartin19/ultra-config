@@ -6,8 +6,8 @@ ultra-config
 .. image:: https://img.shields.io/pypi/v/ultra_config.svg
         :target: https://pypi.python.org/pypi/ultra_config
 
-.. image:: https://img.shields.io/travis/timmmartin19/ultra_config.svg
-        :target: https://travis-ci.org/timmmartin19/ultra_config
+.. image:: https://travis-ci.org/timmartin19/ultra-config.svg?branch=master
+        :target: https://travis-ci.org/timmartin19/ultra-config
 
 .. image:: https://readthedocs.org/projects/ultra-config/badge/?version=latest
         :target: https://ultra-config.readthedocs.io/en/latest/?badge=latest
