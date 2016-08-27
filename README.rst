@@ -10,7 +10,7 @@ ultra-config
         :target: https://travis-ci.org/timmartin19/ultra-config
 
 .. image:: https://readthedocs.org/projects/ultra-config/badge/?version=latest
-        :target: https://ultra-config.readthedocs.io/en/latest/?badge=latest
+        :target: http://ultra-config.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 .. image:: https://pyup.io/repos/github/timmmartin19/ultra_config/shield.svg
