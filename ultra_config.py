@@ -1,4 +1,11 @@
-# -*- coding: utf-8 -*-
+"""
+A library for managing configuration through
+multiple mechanisms.  It additionally allows
+for global, lazy configuration for a given
+python application via the ``GlobalConfig``
+class.  It also makes it very easy to override
+configuration for testing purposes.
+"""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -19,23 +26,80 @@ __email__ = 'tim@timmartin.me'
 __version__ = '0.4.1'
 
 
-def load_python_module_settings(module):
+def load_python_module_settings(module, ignore_prefix='_'):
+    """
+    Loads all items from a python module as
+    potential configuration.  The name of the variable
+    will be the key in the dictionary.
+
+    .. code-block:: python
+
+        from ultra_config import load_python_module_settings
+        import mymodule
+
+        config = load_python_module_settings(mymodule)
+
+    :param object module: A python module object
+    :param unicode ignore_prefix: Any variable in the module
+        that starts with this prefix will be ignored.
+    :return: The items from the module as a dictionary
+    :rtype: dict
+    """
     items = {}
     for key, value in module.__dict__.items():
-        if not (key.startswith('__') and key.endswith('__')):
+        if not (key.startswith(ignore_prefix)):
             items[key] = value
     return items
 
 
-def load_python_object_settings(obj):
-    return load_python_module_settings(obj)
+def load_python_object_settings(obj, ignore_prefix='_'):
+    """
+    Loads the attributes on an object as a configuration
+    object.  By default it will ignore all attributes prefixed
+    with a ``'_'``
+
+    .. code-block:: python
+
+        class MyObj(object):
+            def __init__(self):
+                self.x = 1
+
+        my_obj = MyObj()
+        config = load_python_object_settings(my_obj)
+        assert config['x'] == 1
+
+    :param object obj:
+    :return: A configuration dictionary
+    :rtype: dict
+    """
+    return load_python_module_settings(obj, ignore_prefix=ignore_prefix)
 
 
 def load_dict_settings(dictionary):
+    """
+    A simple wrapper that just copies the dictionary
+
+    :param dict dictionary:
+    :return: A configuration dictionary
+    :rtype: dict
+    """
     return dictionary.copy()
 
 
 def load_configparser_settings(filename):
+    """
+    Loads a ``*.ini`` style file as configuration.
+    It returns a dictionary of dictionaries with
+    each section getting its own dictionary
+
+    :param unicode filename: The name of the file
+        to load as configuration
+    :return: A dictionary of dictionaries with
+        the key of the parent representing a section
+        and the value being a dictionary of the configuration
+        for that section
+    :rtype: dict
+    """
     items = {}
     config_parser = ConfigParser()
     config_parser.read(filename)
@@ -47,6 +111,18 @@ def load_configparser_settings(filename):
 
 
 def load_json_file_settings(filename):
+    """
+    Loads a json file as configuration
+    The json file should contain a JSON
+    object and not a JSON array, string or other
+    value
+
+    :param unicode filename: The name of
+        the json file to load
+    :return: A dictionary of the values from
+        the json file
+    :rtype: dict
+    """
     with open(filename, mode='r') as f:
         return json.load(f)
 
@@ -65,11 +141,25 @@ class UltraConfig(CaseInsensitiveDict):
     using a multitude of mechanisms
     """
     def __init__(self, loaders, required=None):
+        """
+        :param list loaders: A list of configuration loaders
+            Each loader should be a tuple with three items
+            a function that loads the config, a list of arguments
+            to pass to the function and a dictionary of the keyword
+            arguments to pass to the function.  Each should be
+            tuple(``function``, ``list``, ``dict``)
+        :param list[unicode] required: A list keys that are required
+            for the configuration.
+        """
         self.required = required or []
         super(UltraConfig, self).__init__()
         self._loaders = list(loaders)
 
     def load(self):
+        """
+        Loads all of the configuration as specified
+        by the ``loaders``
+        """
         for loader in self._loaders:
             config_loader_func = loader[0]
             args = loader[1] if len(loader) > 1 else []
@@ -78,6 +168,15 @@ class UltraConfig(CaseInsensitiveDict):
             self.update(items)
 
     def validate(self):
+        """
+        Ensures that all required configuration items
+        are available in the configuration.
+
+        Raises a ``MissingConfigurationException`` if there
+        is any missing configuration
+
+        :raises: MissingConfigurationException
+        """
         missing_items = []
         for item in self.required:
             if item not in self:
@@ -140,7 +239,7 @@ class GlobalConfig(object):
         >>> GlobalConfig.load(env_var_prefix='my_app', overrides={'my_setting': 1})
         >>> assert GlobalConfig.config['my_setting'] == 1
     """
-    config = None
+    config = {}
 
     @classmethod
     def load(cls, *args, **kwargs):
@@ -178,8 +277,10 @@ class GlobalConfig(object):
         :return:
         """
         def decorator(func):
+            """The actual decorator"""
             @wraps(func)
             def wrapper(*args, **kwargs):
+                """Wrapper for actual function"""
                 extra_args = [cls.config[name] for name in inject_args]
                 all_args = list(args) + list(extra_args)
                 for key, value in inject_kwargs.items():
