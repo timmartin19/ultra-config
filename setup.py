@@ -27,7 +27,7 @@ setup(
     author="Tim Martin",
     author_email='tim@timmartin.me',
     url='https://github.com/timmmartin19/ultra_config',
-    packages=find_packages(['ultra_config', 'ultra_config.*']),
+    packages=find_packages(include=['ultra_config', 'ultra_config.*']),
     include_package_data=True,
     install_requires=requirements,
     license="MIT license",
