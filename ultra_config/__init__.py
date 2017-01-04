@@ -23,7 +23,7 @@ from env_config import get_envvar_configuration
 
 __author__ = 'Tim Martin'
 __email__ = 'tim@timmartin.me'
-__version__ = '0.5.0'
+__version__ = '0.5.1'
 
 
 def load_python_module_settings(module, ignore_prefix='_'):
