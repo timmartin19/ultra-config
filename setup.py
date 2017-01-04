@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -15,23 +15,27 @@ requirements = [
 ]
 
 test_requirements = [
-    # TODO: put package test requirements here
+   'mock'
 ]
 
 setup(
     name='ultra_config',
     version='0.4.1',
-    description="An extendable configuration that enables you to configure your application via python modules, config files, environment variables and more!",
+    description="An extendable configuration that enables you to configure your "
+                "application via python modules, config files, environment variables and more!",
     long_description=readme + '\n\n' + history,
     author="Tim Martin",
     author_email='tim@timmartin.me',
     url='https://github.com/timmmartin19/ultra_config',
-    py_modules=['ultra_config'],
+    packages=find_packages(['ultra_config', 'ultra_config.*']),
     include_package_data=True,
     install_requires=requirements,
     license="MIT license",
     zip_safe=False,
     keywords='ultra_config',
+    extras_require={
+        'aws': ['boto3']
+    },
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
