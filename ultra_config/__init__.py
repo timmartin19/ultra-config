@@ -25,7 +25,7 @@ from ultra_config.secrets import decrypt
 
 __author__ = 'Tim Martin'
 __email__ = 'tim@timmartin.me'
-__version__ = '0.6.2'
+__version__ = '0.6.3'
 
 
 def load_python_module_settings(module, ignore_prefix='_'):

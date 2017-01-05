@@ -20,7 +20,7 @@ test_requirements = [
 
 setup(
     name='ultra_config',
-    version='0.6.2',
+    version='0.6.3',
     description="An extendable configuration that enables you to configure your "
                 "application via python modules, config files, environment variables and more!",
     long_description=readme + '\n\n' + history,
