@@ -145,10 +145,10 @@ class TestDumpTaskDefinitionSettings(unittest.TestCase):
         td = [{'environment': [{'name': 'something', 'value': 'other'}]}]
         resp = json.loads(dump_task_definition_settings({'new': 'new'}, td))
         self.assertEqual(2, len(resp[0]['environment']))
-        self.assertEqual('other', resp[0]['environment'][0]['value'])
-        self.assertEqual('something', resp[0]['environment'][0]['name'])
-        self.assertEqual('new', resp[0]['environment'][1]['value'])
-        self.assertEqual('new', resp[0]['environment'][1]['name'])
+        self.assertEqual('other', resp[0]['environment'][1]['value'])
+        self.assertEqual('something', resp[0]['environment'][1]['name'])
+        self.assertEqual('new', resp[0]['environment'][0]['value'])
+        self.assertEqual('new', resp[0]['environment'][0]['name'])
 
 
 class TestStripPrefix(unittest.TestCase):

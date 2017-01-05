@@ -189,8 +189,9 @@ def dump_task_definition_settings(config, task_definition, prefix=None, containe
         new_env.append(env_var)
         existing_keys.add(env_var['name'].upper())
 
-    # reverse to maintain order
-    task_definition[container]['environment'] = new_env[::-1]
+    # enforce a consistent order
+    new_env = sorted(new_env, key=lambda envvar: envvar['name'])
+    task_definition[container]['environment'] = new_env
     return json.dumps(task_definition, indent=4, sort_keys=True)
 
 
