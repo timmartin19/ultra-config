@@ -10,8 +10,6 @@ from __future__ import unicode_literals
 import logging
 import warnings
 
-from ultra_config import UltraConfig
-
 LOG = logging.getLogger(__name__)
 
 
@@ -34,7 +32,7 @@ def decrypt(config, decrypter, secrets_config_key='SECRETS', secrets_list=None):
     you can manually pass in a set of keys via
     ``secrets_list=['API_SECRET', 'DB_PASSWORD']``.
 
-    :param UltraConfig config: The configuration object
+    :param ultra_config.UltraConfig config: The configuration object
         with the secrets to decrypt
     :param function decrypter: The function that takes an
         encrypted object and returns the decrypted version
@@ -44,6 +42,16 @@ def decrypt(config, decrypter, secrets_config_key='SECRETS', secrets_list=None):
     :param list[unicode] secrets_list: A list of configuration
         keys the need to be decrypted
     :rtype: NoneType
+    """
+    keys = _get_secret_keys(config, secrets_config_key, secrets_list)
+
+    for key in keys:
+        config[key] = decrypter(config.get(key))
+
+
+def _get_secret_keys(config, secrets_config_key='SECRETS', secrets_list=None):
+    """
+    Finds all of the configuration values that should be secret
     """
     keys = []
     if secrets_config_key is not None:
@@ -57,6 +65,4 @@ def decrypt(config, decrypter, secrets_config_key='SECRETS', secrets_list=None):
         keys.extend(configuration_keys)
     secrets_list = secrets_list or []
     keys.extend(secrets_list)
-
-    for key in keys:
-        config[key] = decrypter(config.get(key))
+    return keys

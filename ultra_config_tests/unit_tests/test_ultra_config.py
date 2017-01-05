@@ -76,6 +76,9 @@ class TestLoadPythonObjects(unittest.TestCase):
 
 
 class TestUltraConfig(unittest.TestCase):
+    def setUp(self):
+        self.encrypter = lambda value: 'blah'
+
     def test_load(self):
         config = UltraConfig([[lambda: dict(x=1, y=2)], [lambda: dict(x=3)]])
         config.load()
@@ -91,3 +94,58 @@ class TestUltraConfig(unittest.TestCase):
         config['REQUIRED'] = True
         resp = config.validate()
         self.assertIsNone(resp)
+
+    def test_encrypt__when_already_encrypted__raise_value_error(self):
+        config = UltraConfig([])
+        config.decrypted = False
+        self.assertRaises(ValueError, config.encrypt)
+
+    def test_encrypt__when_not_encrypted__encrypt_secrets(self):
+        config = UltraConfig([], encrypter=self.encrypter)
+        config['blah'] = 'something'
+        config['SECRETS'] = ['blah']
+        config.decrypted = True
+        config.encrypt()
+        self.assertEqual('blah', config['blah'])
+
+    def test_decrypt__when_already_decrypted__raise_value_error(self):
+        config = UltraConfig([])
+        config.decrypted = True
+        self.assertRaises(ValueError, config.decrypt)
+
+    def test_decrypt__when_not_decrypted__decrypt_secrets(self):
+        config = UltraConfig([], decrypter=self.encrypter)
+        config['blah'] = 'something'
+        config['SECRETS'] = ['blah']
+        config.decrypted = False
+        config.decrypt()
+        self.assertEqual('blah', config['blah'])
+
+    def test_set_encrypted__when_encrypted__encrypt_and_set(self):
+        config = UltraConfig([], encrypter=self.encrypter)
+        config.set_encrypted('blah', 'something')
+        self.assertEqual('blah', config['blah'])
+
+    def test_set_encrypted__when_not_encrypted__set_raw_value(self):
+        config = UltraConfig([], encrypter=self.encrypter)
+        config.decrypted = True
+        config.set_encrypted('blah', 'something')
+        self.assertEqual('something', config['blah'])
+
+    def test_set_encrypted__ensure_secrets_config_key_extended(self):
+        config = UltraConfig([], encrypter=self.encrypter)
+        config.set_encrypted('blah', 'blah')
+        self.assertListEqual(['blah'], config[config.secrets_config_key])
+
+    def test_get_encrypted__when_encrypted__decrypt_and_return(self):
+        config = UltraConfig([], decrypter=self.encrypter)
+        config['blah'] = 'something'
+        resp = config.get_encrypted('blah')
+        self.assertEqual('blah', resp)
+
+    def test_get_encrypted__when_not_encrypted__return(self):
+        config = UltraConfig([], decrypter=self.encrypter)
+        config.decrypted = True
+        config['blah'] = 'something'
+        resp = config.get_encrypted('blah')
+        self.assertEqual('something', resp)

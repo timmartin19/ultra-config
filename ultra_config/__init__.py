@@ -21,6 +21,8 @@ import json
 from insensitive_dict import CaseInsensitiveDict
 from env_config import get_envvar_configuration
 
+from ultra_config.secrets import decrypt
+
 __author__ = 'Tim Martin'
 __email__ = 'tim@timmartin.me'
 __version__ = '0.5.1'
@@ -140,7 +142,7 @@ class UltraConfig(CaseInsensitiveDict):
     that allows for loading configuration
     using a multitude of mechanisms
     """
-    def __init__(self, loaders, required=None):
+    def __init__(self, loaders, required=None, encrypter=None, decrypter=None, secrets_config_key='SECRETS'):
         """
         :param list loaders: A list of configuration loaders
             Each loader should be a tuple with three items
@@ -150,10 +152,24 @@ class UltraConfig(CaseInsensitiveDict):
             tuple(``function``, ``list``, ``dict``)
         :param list[unicode] required: A list keys that are required
             for the configuration.
+        :param function encrypter: Optional tool for encrypted configuration
+            By default it will encrypt everything in the ``secrets_config_key``
+            kwarg key
+        :param function decrypter: Decrypts the configuration specified
+            by ``secrets_config_key`` when ``decrypt`` is called on
+            this object.
+        :param unicode secrets_config_key: The configuration value which
+            indicates all of the configuration parameters that are encrypted.
+            The value of this key should be a list of strings
         """
         self.required = required or []
         super(UltraConfig, self).__init__()
         self._loaders = list(loaders)
+        # A map of secret config keys and whether they are currently encrypted
+        self.decrypted = False
+        self.encrypter = encrypter
+        self.decrypter = decrypter
+        self.secrets_config_key = secrets_config_key
 
     def load(self):
         """
@@ -185,6 +201,61 @@ class UltraConfig(CaseInsensitiveDict):
             required_string = ', '.join(['"{0}"'.format(item) for item in missing_items])
             raise MissingConfigurationException('Missing required items: {0}'.format(required_string))
 
+    def encrypt(self):
+        """
+        Encrypts all of the secrets corresponding to the
+        configuration in the secrets_config_key
+
+        :rtype: NoneType
+        """
+        if not self.decrypted:
+            raise ValueError("The configuration is already encrypted")
+        decrypt(self, self.encrypter, secrets_config_key=self.secrets_config_key)
+        self.decrypted = False
+
+    def decrypt(self):
+        """
+        Encrypts all of the secrets corresponding to the
+        configuration in the secrets_config_key
+
+        :rtype: NoneType
+        """
+        if self.decrypted:
+            raise ValueError("The configuration is already decrypted")
+        decrypt(self, self.decrypter, secrets_config_key=self.secrets_config_key)
+        self.decrypted = True
+
+    def set_encrypted(self, key, value):
+        """
+        Sets a given key to the encrypted value.
+        The value will be encrypted automatically
+        if self.decrypted is False.  Otherwise,
+        it will set the raw value and add the key
+        to the secret_config_key value
+
+        :param unicode key: The key of the configuration value
+        :param object value: The value that should ultimately be
+            encrypted
+        """
+        secret_keys = self.get(self.secrets_config_key, [])
+        secret_keys.append(key)
+        if self.decrypted:
+            self[key] = value
+        else:
+            self[key] = self.encrypter(value)
+        self[self.secrets_config_key] = secret_keys
+
+    def get_encrypted(self, key):
+        """
+        Gets the decrypted value of some key
+
+        :param unicode key:
+        """
+        if self.decrypted:
+            return self[key]
+        else:
+            return self.decrypter(self[key])
+
 
 def simple_config(default_settings=None,
                   json_file=None,
@@ -207,6 +278,7 @@ def simple_config(default_settings=None,
     :param unicode ini_file:
     :param unicode env_var_prefix:
     :param dict overrides:
+    :param list[unicode] required: The required configuration
     :return: UltraConfig
     """
     loaders = []
