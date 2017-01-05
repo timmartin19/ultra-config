@@ -18,6 +18,11 @@ try:
 except NameError:
     unicode_type = str
 
+try:
+    bytes_type = bytes
+except NameError:
+    bytes_type = str
+
 
 def create_kms_decrypter(client, decode=True, **kwargs):
     """
@@ -144,7 +149,7 @@ def _convert_to_task_definition_environment(config, prefix=None, dump_as_json=Tr
     """
     env_vars = []
     for key, value in config.items():
-        if dump_as_json and not isinstance(value, str):
+        if dump_as_json and not isinstance(value, (unicode_type, bytes_type,)):
             value = json.dumps(value)
         if prefix is not None:
             key = '{0}_{1}'.format(prefix, key)
