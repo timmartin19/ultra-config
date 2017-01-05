@@ -137,6 +137,12 @@ class TestUltraConfig(unittest.TestCase):
         config.set_encrypted('blah', 'blah')
         self.assertListEqual(['blah'], config[config.secrets_config_key])
 
+    def test_set_encrypted__when_key_already_in_secrets__no_duplicates(self):
+        config = UltraConfig([], encrypter=self.encrypter)
+        config[config.secrets_config_key] = ['blah']
+        config.set_encrypted('blah', 'blah')
+        self.assertListEqual(['blah'], config[config.secrets_config_key])
+
     def test_get_encrypted__when_encrypted__decrypt_and_return(self):
         config = UltraConfig([], decrypter=self.encrypter)
         config['blah'] = 'something'

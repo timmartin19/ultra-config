@@ -238,11 +238,13 @@ class UltraConfig(CaseInsensitiveDict):
             encrypted
         """
         secret_keys = self.get(self.secrets_config_key, [])
-        secret_keys.append(key)
+        if key not in secret_keys:
+            secret_keys.append(key)
         if self.decrypted:
             self[key] = value
         else:
             self[key] = self.encrypter(value)
+
         self[self.secrets_config_key] = secret_keys
 
     def get_encrypted(self, key):
