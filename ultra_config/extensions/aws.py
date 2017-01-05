@@ -5,7 +5,10 @@ from __future__ import unicode_literals
 
 import base64
 import json
-from json.decoder import JSONDecodeError
+try:
+    from json.decoder import JSONDecodeError
+except ImportError:
+    JSONDecodeError = ValueError
 import logging
 
 LOG = logging.getLogger(__name__)
