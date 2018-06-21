@@ -11,4 +11,4 @@ PyYAML==3.12
 
 
 
-open-source-init
+open-source-init==0.1.4
